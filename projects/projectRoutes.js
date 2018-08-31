@@ -70,4 +70,22 @@ projectRouter.put("/:id", bodyChecker, (req,res) => {
     })
 })
 
+projectRouter.delete("/:id", (req,res) => {
+  const {id} = req.params; 
+  projectDb
+    .remove(id)
+    .then(deletedCount => {
+      if(deletedCount){
+        res.status(204).end()
+      } else {
+        res.status(404).json({message: `Nothing deleted because id ${id} was not found`})
+      }
+    })
+    .catch(error => {
+      res.status(500).json({error, message: `Issue with deleting id ${id}`})
+    })
+})
+
+
+
 module.exports = projectRouter;

@@ -87,20 +87,36 @@ actionRouter.put("/:id", bodyChecker, (req, res) => {
     .update(id, req.posting)
     .then(updated => {
       if (updated) {
-        console.log(updated)
+        console.log(updated);
         res.status(200).json(updated);
       } else {
-        res
-          .status(404)
-          .json({
-            message: `Returned ${updated} action with id ${id} not found`
-          });
+        res.status(404).json({
+          message: `Returned ${updated} action with id ${id} not found`
+        });
       }
     })
     .catch(error => {
       res
         .status(500)
         .json({ error, message: `Problem saving update to post id ${id}` });
+    });
+});
+
+actionRouter.delete("/:id", (req, res) => {
+  const { id } = req.params;
+  actionDb
+    .remove(id)
+    .then(deletedCount => {
+      if (deletedCount) {
+        res.status(204).end();
+      } else {
+        res
+          .status(404)
+          .json({ message: `No item deleted action id ${id} not found.` });
+      }
+    })
+    .catch(error => {
+      res.status(500).json({ error, message: "Unable to delete" });
     });
 });
 

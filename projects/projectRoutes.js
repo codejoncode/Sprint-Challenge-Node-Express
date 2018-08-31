@@ -57,4 +57,17 @@ projectRouter.post("/", bodyChecker, (req, res) => {
     })
 });
 
+projectRouter.put("/:id", bodyChecker, (req,res) => {
+  const {id} = req.params; 
+  projectDb
+    .update(id, req.posting)
+    .then(updated => {
+      if(updated){
+        res.status(200).json(updated)
+      } else {
+        res.status(404).json({message: `Not found ${updated} for id: ${id}`})
+      }
+    })
+})
+
 module.exports = projectRouter;

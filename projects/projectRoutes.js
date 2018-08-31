@@ -45,6 +45,23 @@ projectRouter.get("/", (req, res) => {
     });
 });
 
+projectRouter.get("/:id", (req, res) => {
+  const { id } = req.params;
+  projectDb
+    .get(id)
+    .then(actions => {
+      res.status(200).json(actions);
+    })
+    .catch(error => {
+      res
+        .status(500)
+        .json({
+          error,
+          message: `Unable to obtain project actions for id: ${id}`
+        });
+    });
+});
+
 projectRouter.post("/", bodyChecker, (req, res) => {
   projectDb
     .insert(req.posting)

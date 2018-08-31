@@ -4,6 +4,7 @@ import { Route } from "react-router-dom";
 
 import "./App.css";
 import ProjectList from "./components/ProjectList";
+import ProjectActions from "./components/ProjectActions";
 
 class App extends Component {
   constructor(props) {
@@ -36,6 +37,9 @@ class App extends Component {
           path="/"
           render={props => <ProjectList projects={this.state.projects} />}
         />
+        <Route
+          path="/:id"
+          component={ProjectActions} />
         
       </div>
     );

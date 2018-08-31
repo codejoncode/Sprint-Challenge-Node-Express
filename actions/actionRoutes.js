@@ -54,7 +54,7 @@ function bodyChecker(req, res, next) {
   req.posting = completed
     ? { project_id, description, notes, completed }
     : { project_id, description, notes };
-  console.log(req.posting)
+  console.log(req.posting);
   next();
 }
 
@@ -78,6 +78,29 @@ actionRouter.post("/", bodyChecker, (req, res) => {
     })
     .catch(error => {
       res.status(500).json({ error, message: "Problem saving the post" });
+    });
+});
+
+actionRouter.put("/:id", bodyChecker, (req, res) => {
+  const { id } = req.params;
+  actionDb
+    .update(id, req.posting)
+    .then(updated => {
+      if (updated) {
+        console.log(updated)
+        res.status(200).json(updated);
+      } else {
+        res
+          .status(404)
+          .json({
+            message: `Returned ${updated} action with id ${id} not found`
+          });
+      }
+    })
+    .catch(error => {
+      res
+        .status(500)
+        .json({ error, message: `Problem saving update to post id ${id}` });
     });
 });
 
